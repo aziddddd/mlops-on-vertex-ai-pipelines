@@ -1,0 +1,19 @@
+#!/bin/bash
+id=$(uuidgen)
+
+echo $id
+docker-compose -f $(dirname "$0")/docker-compose.yml build --force-rm && docker-compose -f $(dirname "$0")/docker-compose.yml run --label "uuid=$id" unit "${@:2}"
+
+exit_code=$?
+
+echo $(dirname "$0")
+echo "Trying to delete htmlcov"
+rm -rf $(dirname "$0")/../../htmlcov
+cid=$(docker ps --filter label="uuid=$id" --quiet --all)
+
+echo $cid
+docker cp -a $cid:/kfp_components/htmlcov $(dirname "$0")/../../htmlcov
+docker cp -a $cid:/kfp_components/.coverage $(dirname "$0")/../../.coverage
+docker-compose -f $(dirname "$0")/docker-compose.yml down
+
+exit $exit_code

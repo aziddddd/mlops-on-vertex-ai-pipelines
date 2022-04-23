@@ -1,0 +1,102 @@
+
+options:
+  docker: true
+  
+definitions:
+  steps:
+
+    ############ UNIT TEST ##############
+    - step: &kfp-components-unit-test
+        name: Unit Test for KFP components
+        image: python:3.7
+        script:
+          - apt-get update
+          - apt-get -y install python3-pip
+          - apt-get -y install uuid-runtime
+          - pip3 install docker-compose
+          - export PATH=$HOME/.local/bin:$PATH
+          - cd ml_components
+          - tests/run
+        services:
+          - docker
+        caches:
+          - docker # adds docker layer caching 
+
+    ############ CLOUD FUNCTIONS : DMG ##############
+    - step: &deploy-cf-mlops-dmg-vaip
+        name: Deploy Cloud Function for MLOps DMG VAIP
+        image: gcr.io/deeplearning-platform-release/base-cpu
+        script:
+          - mv main_dmg.py main.py
+          - jupytext --to py grand_pipeline_dmg.ipynb
+          - echo $GCLOUD_API_KEYFILE | base64 -d > /tmp/gcloud-api-key.json
+          - gcloud auth activate-service-account --key-file /tmp/gcloud-api-key.json
+          - gcloud config set project $PROJECT_ID
+          - >
+            gcloud functions deploy mlops-dmg-vaip
+            --project=$PROJECT_ID
+            --region=asia-southeast1 
+            --ingress-settings=internal-only
+            --entry-point=pipeline_runner 
+            --memory=256MB 
+            --runtime=python37 
+            --service-account=$SERVICE_ACCOUNT
+            --timeout=60s 
+            --max-instances=1
+            --trigger-topic=mlops-dmg-vaip-pipeline-runner
+
+    ############ CLOUD FUNCTIONS : TRAIN ##############
+    - step: &deploy-cf-mlops-train-vaip
+        name: Deploy Cloud Function for MLOps Train VAIP
+        image: gcr.io/deeplearning-platform-release/base-cpu
+        script:
+          - mv main_train.py main.py 
+          - jupytext --to py grand_pipeline_train.ipynb
+          - echo $GCLOUD_API_KEYFILE | base64 -d > /tmp/gcloud-api-key.json
+          - gcloud auth activate-service-account --key-file /tmp/gcloud-api-key.json
+          - gcloud config set project $PROJECT_ID
+          - >
+            gcloud functions deploy mlops-train-vaip
+            --project=$PROJECT_ID
+            --region=asia-southeast1 
+            --ingress-settings=internal-only
+            --entry-point=pipeline_runner 
+            --memory=256MB 
+            --runtime=python37 
+            --service-account=$SERVICE_ACCOUNT
+            --timeout=60s 
+            --max-instances=1
+            --trigger-topic=mlops-train-vaip-pipeline-runner
+
+    ############ CLOUD FUNCTIONS : PREDICTION ##############
+    - step: &deploy-cf-mlops-prediction-vaip
+        name: Deploy Cloud Function for MLOps Prediction VAIP
+        image: gcr.io/deeplearning-platform-release/base-cpu
+        script:
+          - mv main_pred.py main.py
+          - jupytext --to py grand_pipeline_pred.ipynb
+          - echo $GCLOUD_API_KEYFILE | base64 -d > /tmp/gcloud-api-key.json
+          - gcloud auth activate-service-account --key-file /tmp/gcloud-api-key.json
+          - gcloud config set project $PROJECT_ID
+          - >
+            gcloud functions deploy mlops-prediction-vaip
+            --project=$PROJECT_ID
+            --region=asia-southeast1 
+            --ingress-settings=internal-only
+            --entry-point=pipeline_runner 
+            --memory=256MB 
+            --runtime=python37 
+            --service-account=$SERVICE_ACCOUNT
+            --timeout=60s 
+            --max-instances=1
+            --trigger-topic=mlops-prediction-vaip-pipeline-runner
+
+# pipelines:
+  # default:
+  #   - step: *kfp-components-unit-test
+#   branches:
+#     main:
+#       # - step: *kfp-components-unit-test
+#       # - step: &deploy-cf-mlops-dmg-vaip
+#       # - step: &deploy-cf-mlops-train-vaip
+#       # - step: &deploy-cf-mlops-prediction-vaip
