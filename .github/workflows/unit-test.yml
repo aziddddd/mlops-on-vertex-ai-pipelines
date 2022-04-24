@@ -1,11 +1,11 @@
 name: unit-test
 on:
   pull_request:
-    branches:    
+    branches:
       - main
   push:
-    branches:    
-      - !main
+    branches-ignore:
+      - main
 jobs:
   test-job:
     runs-on: ubuntu-20.04
