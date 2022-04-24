@@ -76,6 +76,21 @@ By unit testing. Refer quote below:
 7. Create a Pull Request to merge your branch to master branch and assign the PR to a reviewer (Senior/Lead MLOps).
 8. The reviewer will merge the PR for you.
 
+# Getting Started
+
+Kindly perform the following steps before you actually run the pipeline:
+1. Create the following BQ datasets in your GCP project with the following names:
+    1. test_train_dataset
+    2. test_prediction_dataset
+    3. test_tracking
+    4. test_outbound
+2. Create a GCS bucket for VAIP metadata auto-storage .
+    1. Set CREATE_BUCKET parameter to True in config.py and save.
+    2. Run grandpipeline.ipynb until the “ Load your pipeline components and configs” cell
+    3. Change CREATE_BUCKET parameter back to False in config.py and save.
+    4. Restart the kernel.
+3. Run the following snippet to start/restart your model league
+
 # Important Notes
 
 First time run require model league to be created. Use restart_model_league function in ml_components/pipelinehelper.py as a kickstart to do this.
