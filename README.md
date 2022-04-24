@@ -3,6 +3,49 @@
 
 Vertex AI Pipeline Base template for MLOps.
 
+# Introduction
+
+You managed to build a good demand forecasting model. or GPT-10. So, what's next?
+
+People tend to think that a Machine Learning project is all just about building models that can do cool things.
+
+![alt text](https://github.com/aziddddd/mlops-on-vertex-ai-pipelines/blob/f4b2985e547f7adac97a431749b0cc44b38875a8/docs/resources/images/intro_1.png)
+
+However, it's more that just that. A Machine Learning project is a lifecycle where we
+1. Continuously monitor and analyse the project performance from the perspective of business, data quality and pipeline health.
+2. Debug or enhance the component of the pipelines.
+
+![alt text](https://github.com/aziddddd/mlops-on-vertex-ai-pipelines/blob/f4b2985e547f7adac97a431749b0cc44b38875a8/docs/resources/images/intro_2.png)
+
+This repository provides an end-to-end Machine Learning pipeline that allow us to iteratively develop and monitor the pipeline efficiently.
+
+# Architecture Diagram
+
+Below is the overall achitecture diagram of this MLOps framework, powered by Github, Kubeflow Pipeline and Google Cloud Platform.
+
+![alt text](https://github.com/aziddddd/mlops-on-vertex-ai-pipelines/blob/f4b2985e547f7adac97a431749b0cc44b38875a8/docs/resources/images/pipeline_deployment_v3.png)
+
+# Current features
+
+This MLOps framework is currently
+
+1. Supports datamodel generation (optional).
+2. Supports custom data import period and queries.
+3. Supports custom data preprocessing function
+4. Supports Data Integrity Check (DIC) 
+    1. Data Quality Check
+    2. Data Drift Check
+5. Supports Automatic Retraining policy (upon failure of DIC)
+6. Supports saving model evaluation graphs into HTML.
+7. Supports Champion and Challenger concept.
+8. Stores train and prediction dataset.
+9. Custom Model Registry.
+    1. Supports model tagging.
+    2. Stores model path.
+    3. Stores train dataset path.
+    4. Stores prediction dataset paths.
+    5. Stores Vertex AI Pipelines job IDs.
+
 # Installation
 
 To use this locally:
