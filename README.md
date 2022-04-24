@@ -25,17 +25,17 @@ Below is the overall achitecture diagram of this MLOps framework, powered by Git
 
 ![alt text](https://github.com/aziddddd/mlops-on-vertex-ai-pipelines/blob/f4b2985e547f7adac97a431749b0cc44b38875a8/docs/resources/images/pipeline_deployment_v3.png)
 
-# Current features
+# Current Features
 
 This MLOps framework is currently
 
 1. Supports datamodel generation (optional).
 2. Supports custom data import period and queries.
-3. Supports custom data preprocessing function
-4. Supports Data Integrity Check (DIC) 
-    1. Data Quality Check
-    2. Data Drift Check
-5. Supports Automatic Retraining policy (upon failure of DIC)
+3. Supports custom data preprocessing function.
+4. Supports Data Integrity Check (DIC).
+    1. Data Quality Check.
+    2. Data Drift Check.
+5. Supports Automatic Retraining policy (upon failure of DIC).
 6. Supports saving model evaluation graphs into HTML.
 7. Supports Champion and Challenger concept.
 8. Stores train and prediction dataset.
@@ -52,7 +52,7 @@ To use this locally:
 
 1. Fork this repository.
 2. Never edit directly on master branch so create a new branch.
-3. Input your project configuration in config.py
+3. Input your project configuration in config.py.
 4. When developing:
     1. Set **RUNNER='dev'** in config.py.
     2. Do your development.
@@ -80,16 +80,16 @@ By unit testing. Refer quote below:
 
 Kindly perform the following steps before you actually run the pipeline:
 1. Create the following BQ datasets in your GCP project with the following names:
-    1. test_train_dataset
-    2. test_prediction_dataset
-    3. test_tracking
-    4. test_outbound
-2. Create a GCS bucket for VAIP metadata auto-storage .
+    1. test_train_dataset.
+    2. test_prediction_dataset.
+    3. test_tracking.
+    4. test_outbound.
+2. Create a GCS bucket for VAIP metadata auto-storage.
     1. Set CREATE_BUCKET parameter to True in config.py and save.
-    2. Run grandpipeline.ipynb until the “ Load your pipeline components and configs” cell
+    2. Run grandpipeline.ipynb until the “ Load your pipeline components and configs” cell.
     3. Change CREATE_BUCKET parameter back to False in config.py and save.
     4. Restart the kernel.
-3. Run the following snippet to start/restart your model league
+3. Run the following snippet to start/restart your model league.
 
 # Important Notes
 
