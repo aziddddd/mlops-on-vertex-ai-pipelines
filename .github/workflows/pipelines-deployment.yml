@@ -1,14 +1,99 @@
-name: pipelines-deployment
-on:
-  push:
-    branches:    
-      - main
-jobs:
-  test-job:
-    runs-on: ubuntu-20.04
-    container:
-      image: python:3.7
-    steps:
-      - uses: actions/checkout@v3
-      - run: pwd
-      - run: ls
+# name: pipelines-deployment
+
+# on:
+#   push:
+#     branches:    
+#       - main
+
+# env:
+#   GCLOUD_API_KEYFILE: ${{ secrets.GCLOUD_API_KEYFILE }}
+#   SERVICE_ACCOUNT: ${{ secrets.SERVICE_ACCOUNT }}
+#   PROJECT_ID: ${{ secrets.PROJECT_ID }}
+#   REGION: ${{ secrets.REGION }}
+
+# jobs:
+#   ml-components-unit-test:
+#     runs-on: ubuntu-20.04
+#     container:
+#       image: python:3.7
+#     steps:
+#       - uses: actions/checkout@v3
+#       - run: apt-get update
+#       - run: apt-get -y install python3-pip
+#       - run: apt-get -y install uuid-runtime
+#       - run: pip3 install docker-compose
+#       - run: export PATH=$HOME/.local/bin:$PATH
+#       - run: cd ml_components
+#       - run: tests/run
+
+#   deploy-cf-mlops-dmg-vaip:
+#     runs-on: ubuntu-20.04
+#     container:
+#       image: gcr.io/deeplearning-platform-release/base-cpu
+#     steps:
+#       - uses: actions/checkout@v3
+#       - run: mv main_dmg.py main.py
+#       - run: jupytext --to py grand_pipeline_dmg.ipynb
+#       - run: echo $GCLOUD_API_KEYFILE | base64 -d > /tmp/gcloud-api-key.json
+#       - run: gcloud auth activate-service-account --key-file /tmp/gcloud-api-key.json
+#       - run: gcloud config set project $PROJECT_ID
+#       - run: >
+#             gcloud functions deploy mlops-dmg-vaip
+#             --project=$PROJECT_ID
+#             --region=$REGION
+#             --ingress-settings=internal-only
+#             --entry-point=pipeline_runner 
+#             --memory=256MB 
+#             --runtime=python37 
+#             --service-account=$SERVICE_ACCOUNT
+#             --timeout=60s 
+#             --max-instances=1
+#             --trigger-topic=mlops-dmg-vaip-pipeline-runner
+
+#   deploy-cf-mlops-train-vaip:
+#     runs-on: ubuntu-20.04
+#     container:
+#       image: gcr.io/deeplearning-platform-release/base-cpu
+#     steps:
+#       - uses: actions/checkout@v3
+#       - run: mv main_train.py main.py
+#       - run: jupytext --to py grand_pipeline_train.ipynb
+#       - run: echo $GCLOUD_API_KEYFILE | base64 -d > /tmp/gcloud-api-key.json
+#       - run: gcloud auth activate-service-account --key-file /tmp/gcloud-api-key.json
+#       - run: gcloud config set project $PROJECT_ID
+#       - run: >
+#             gcloud functions deploy mlops-train-vaip
+#             --project=$PROJECT_ID
+#             --region=$REGION
+#             --ingress-settings=internal-only
+#             --entry-point=pipeline_runner 
+#             --memory=256MB 
+#             --runtime=python37 
+#             --service-account=$SERVICE_ACCOUNT
+#             --timeout=60s 
+#             --max-instances=1
+#             --trigger-topic=mlops-train-vaip-pipeline-runner
+
+#   deploy-cf-mlops-prediction-vaip:
+#     runs-on: ubuntu-20.04
+#     container:
+#       image: gcr.io/deeplearning-platform-release/base-cpu
+#     steps:
+#       - uses: actions/checkout@v3
+#       - run: mv main_pred.py main.py
+#       - run: jupytext --to py grand_pipeline_pred.ipynb
+#       - run: echo $GCLOUD_API_KEYFILE | base64 -d > /tmp/gcloud-api-key.json
+#       - run: gcloud auth activate-service-account --key-file /tmp/gcloud-api-key.json
+#       - run: gcloud config set project $PROJECT_ID
+#       - run: >
+#             gcloud functions deploy mlops-prediction-vaip
+#             --project=$PROJECT_ID
+#             --region=$REGION
+#             --ingress-settings=internal-only
+#             --entry-point=pipeline_runner 
+#             --memory=256MB 
+#             --runtime=python37 
+#             --service-account=$SERVICE_ACCOUNT
+#             --timeout=60s 
+#             --max-instances=1
+#             --trigger-topic=mlops-prediction-vaip-pipeline-runner
