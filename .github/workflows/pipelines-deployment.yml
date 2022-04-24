@@ -1,0 +1,13 @@
+name: pipelines-deployment
+# on:
+#   pull_request:
+#     branches:    
+#       - main
+on: [push]
+jobs:
+  test-job:
+    container:
+      image: python:3.7
+    steps:
+      - uses: actions/checkout@v3
+      - run: echo haha
