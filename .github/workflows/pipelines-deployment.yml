@@ -6,6 +6,7 @@ name: pipelines-deployment
 on: [push]
 jobs:
   test-job:
+    runs-on: ubuntu-latest
     container:
       image: python:3.7
     steps:
