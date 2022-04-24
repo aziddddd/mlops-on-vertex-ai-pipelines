@@ -6,9 +6,10 @@ name: pipelines-deployment
 on: [push]
 jobs:
   test-job:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20:04
     container:
       image: python:3.7
     steps:
       - uses: actions/checkout@v3
-      - run: echo haha
+      - run: pwd
+      - run: ls
