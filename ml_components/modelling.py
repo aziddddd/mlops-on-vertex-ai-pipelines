@@ -180,7 +180,7 @@ def model_evaluator(
     plt.figure(figsize=(20, 10))
     explainer = shap.TreeExplainer(model)
     shap_values = explainer.shap_values(x_val)
-    shap.summary_plot(shap_values[1], x_val, plot_type='dot')
+    shap.summary_plot(shap_values, x_val, plot_type='dot')
     graph_2 = plot_to_html(io.BytesIO())
 
     html = graph_1 + '<br>' + graph_2
