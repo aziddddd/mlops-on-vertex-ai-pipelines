@@ -50,7 +50,7 @@ This MLOps framework is currently
 
 1. ```git clone git@github.com:aziddddd/mlops-on-vertex-ai-pipelines.git```
 2. ```git switch <your_desired_template_branch>```
-3. ```git checkout -b <your_working_>```
+3. ```git checkout -b <your_working_branch_id>```
 4. Input your project configuration in config.py.
 5. Input your project_id, region, impersonate_service_account in cicd-pipeline.yml.
 6. When developing:

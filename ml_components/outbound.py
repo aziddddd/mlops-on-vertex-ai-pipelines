@@ -147,11 +147,13 @@ def update_model_league(
             from typing import Callable
             from google.cloud import pubsub_v1
 
-            trigger_info = {
-                'mode': 'classify',
-                'usecase_id': project_name,
-                'model_path': model_object.uri,
-            }
+            trigger_info = json.dumps(
+                {
+                    'mode': 'classify',
+                    'usecase_id': project_name,
+                    'model_path': model_object.uri,
+                }
+            )
 
             publisher = pubsub_v1.PublisherClient()
             topic_path = publisher.topic_path('airasia-gaexport', mlops_topic.split('/')[-1])
@@ -170,9 +172,9 @@ def update_model_league(
                 return callback
 
             # When you publish a message, the client returns a future.
-            publish_future = publisher.publish(topic_path, data.encode("utf-8"))
+            publish_future = publisher.publish(topic_path, trigger_info.encode("utf-8"))
             # Non-blocking. Publish failures are handled in the callback function.
-            publish_future.add_done_callback(get_callback(publish_future, json.dumps(trigger_info)))
+            publish_future.add_done_callback(get_callback(publish_future, trigger_info))
             publish_futures.append(publish_future)
 
             # Wait for all the publish futures to resolve before exiting.
