@@ -1,0 +1,29 @@
+.adult_income:
+  variables:
+    PROJECT_NAME: adult_income
+    PROJECT_ID: your-project-id
+    REGION: us-central1
+    SERVICE_ACCOUNT: your-service-account@developer.gserviceaccount.com
+  before_script:
+    - echo ${PROJECT_NAME}
+  only:
+    changes:
+      - adult_income/**/*
+
+adult-income-test:
+  stage: test
+  extends:
+    - .adult_income
+    - .unit_test_config
+
+adult-income-deploy-train:
+  stage: deploy
+  extends:
+    - .adult_income
+    - .deploy_cf_classify_train
+
+adult-income-deploy-pred:
+  stage: deploy
+  extends:
+    - .adult_income
+    - .deploy_cf_classify_pred

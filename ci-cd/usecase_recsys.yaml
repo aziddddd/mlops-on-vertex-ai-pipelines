@@ -1,0 +1,23 @@
+.usecase_recsys:
+  variables:
+    PROJECT_NAME: usecase_recsys
+    PROJECT_ID: your-project-id
+    REGION: us-central1
+    SERVICE_ACCOUNT: your-service-account@developer.gserviceaccount.com
+  before_script:
+    - echo ${PROJECT_NAME}
+  only:
+    changes:
+      - usecase_recsys/**/*
+
+usecase-recsys-test:
+  stage: test
+  extends:
+    - .usecase_recsys
+    - .unit_test_config
+
+usecase-recsys-deploy:
+  stage: deploy
+  extends:
+    - .usecase_recsys
+    - .deploy_cf_recsys

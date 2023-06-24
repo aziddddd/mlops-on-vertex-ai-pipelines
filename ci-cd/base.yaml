@@ -1,0 +1,139 @@
+format:
+  stage: format
+  image: python:3.7-slim
+  script:
+    - pip install black==22.3.0
+    - black ./**/**/**/*.py
+  only:
+    - merge_requests
+
+.unit_test_config:
+  image: python:3.7-slim
+  script:
+    - pip install -r test_requirements.txt
+    - cd ${PROJECT_NAME}/ml_components/
+    - pwd
+    - cp ../config.py .
+    - >
+      pytest -x -vv 
+      --durations=30 
+      --cov-config=../.coveragerc 
+      --cov 
+      --cov-report term 
+      --cov-report html 
+      --cov-fail-under 30 
+      tests/unit
+  only:
+    refs:
+      - merge_requests
+
+.deploy_cf_classify_train:
+  image: gcr.io/deeplearning-platform-release/base-cpu
+  script:
+    - cd ${PROJECT_NAME}/
+    - pwd
+    - echo ${CI_COMMIT_SHORT_SHA} >> commit_history.txt
+    - mv main_train.py main.py
+    - jupytext --to py grand_pipeline_train.ipynb
+    - echo ${GCLOUD_API_KEYFILE} | base64 -d > /tmp/gcloud-api-key.json
+    - gcloud auth activate-service-account --key-file /tmp/gcloud-api-key.json
+    - gcloud config set project ${PROJECT_ID}
+    - >
+      gcloud functions deploy mlops-${PROJECT_NAME//_/-}-train-vaip
+      --project=${PROJECT_ID}
+      --region=${REGION}
+      --ingress-settings=internal-only
+      --entry-point=pipeline_runner
+      --memory=256MB
+      --runtime=python37
+      --service-account=${MLOPS_SERVICE_ACCOUNT}
+      --impersonate-service-account=${SERVICE_ACCOUNT}
+      --timeout=60s
+      --max-instances=1
+      --trigger-topic=mlops-${PROJECT_NAME//_/-}-train-vaip-pipeline-runner
+  only:
+    refs:
+      - master
+
+.deploy_cf_classify_pred:
+  stage: deploy
+  image: gcr.io/deeplearning-platform-release/base-cpu
+  script:
+    - cd ${PROJECT_NAME}/
+    - pwd
+    - >
+      if [ $(grep -iRn "IS_ENDPOINT = True" config.py|wc -l) -gt 0 ] ; then exit;
+      else
+        mv main_pred.py main.py
+        jupytext --to py grand_pipeline_pred.ipynb
+        echo ${GCLOUD_API_KEYFILE} | base64 -d > /tmp/gcloud-api-key.json
+        gcloud auth activate-service-account --key-file /tmp/gcloud-api-key.json
+        gcloud config set project ${PROJECT_ID}
+        gcloud functions deploy mlops-${PROJECT_NAME//_/-}-pred-vaip \
+        --project=${PROJECT_ID} \
+        --region=${REGION} \
+        --ingress-settings=internal-only \
+        --entry-point=pipeline_runner \
+        --memory=256MB \
+        --runtime=python37 \
+        --service-account=${MLOPS_SERVICE_ACCOUNT} \
+        --impersonate-service-account=${SERVICE_ACCOUNT} \
+        --timeout=60s \
+        --max-instances=1 \
+        --trigger-topic=mlops-${PROJECT_NAME//_/-}-pred-vaip-pipeline-runner
+      fi
+  only:
+    refs:
+      - master
+
+.deploy_cf_forecast:
+  image: gcr.io/deeplearning-platform-release/base-cpu
+  script:
+    - cd ${PROJECT_NAME}/
+    - pwd
+    - jupytext --to py grand_pipeline.ipynb
+    - echo ${GCLOUD_API_KEYFILE} | base64 -d > /tmp/gcloud-api-key.json
+    - gcloud auth activate-service-account --key-file /tmp/gcloud-api-key.json
+    - gcloud config set project ${PROJECT_ID}
+    - >
+      gcloud functions deploy mlops-${PROJECT_NAME//_/-}-vaip
+      --project=${PROJECT_ID}
+      --region=${REGION}
+      --ingress-settings=internal-only
+      --entry-point=pipeline_runner
+      --memory=256MB
+      --runtime=python37
+      --service-account=${MLOPS_SERVICE_ACCOUNT}
+      --impersonate-service-account=${SERVICE_ACCOUNT}
+      --timeout=60s
+      --max-instances=1
+      --trigger-topic=mlops-${PROJECT_NAME//_/-}-vaip-pipeline-runner
+  only:
+    refs:
+      - master
+
+.deploy_cf_recsys:
+  image: gcr.io/deeplearning-platform-release/base-cpu
+  script:
+    - cd ${PROJECT_NAME}/
+    - pwd
+    - jupytext --to py grand_pipeline.ipynb
+    - echo ${GCLOUD_API_KEYFILE} | base64 -d > /tmp/gcloud-api-key.json
+    - gcloud auth activate-service-account --key-file /tmp/gcloud-api-key.json
+    - gcloud config set project ${PROJECT_ID}
+    - >
+      gcloud functions deploy mlops-${PROJECT_NAME//_/-}-vaip
+      --project=${PROJECT_ID}
+      --region=${REGION}
+      --ingress-settings=internal-only
+      --entry-point=pipeline_runner
+      --memory=256MB
+      --runtime=python37
+      --service-account=${MLOPS_SERVICE_ACCOUNT}
+      --impersonate-service-account=${SERVICE_ACCOUNT}
+      --timeout=60s
+      --max-instances=1
+      --trigger-topic=mlops-${PROJECT_NAME//_/-}-vaip-pipeline-runner
+  only:
+    refs:
+      - master

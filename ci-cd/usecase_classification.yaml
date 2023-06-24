@@ -1,0 +1,29 @@
+.usecase_classification:
+  variables:
+    PROJECT_NAME: usecase_classification
+    PROJECT_ID: your-project-id
+    REGION: us-central1
+    SERVICE_ACCOUNT: your-service-account@developer.gserviceaccount.com
+  before_script:
+    - echo ${PROJECT_NAME}
+  only:
+    changes:
+      - usecase_classification/**/*
+
+usecase-classification-test:
+  stage: test
+  extends:
+    - .usecase_classification
+    - .unit_test_config
+
+usecase-classification-deploy-train:
+  stage: deploy
+  extends:
+    - .usecase_classification
+    - .deploy_cf_classify_train
+
+usecase-classification-deploy-pred:
+  stage: deploy
+  extends:
+    - .usecase_classification
+    - .deploy_cf_classify_pred

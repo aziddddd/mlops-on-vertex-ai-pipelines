@@ -1,0 +1,11 @@
+stages:
+  - format
+  - test
+  - deploy
+
+include:
+  - local: "ci-cd/base.yaml"
+  - local: "ci-cd/usecase_classification.yaml"
+  - local: "ci-cd/usecase_forecast.yaml"
+  - local: "ci-cd/adult_income.yaml"
+  - local: "ci-cd/usecase_recsys.yaml"

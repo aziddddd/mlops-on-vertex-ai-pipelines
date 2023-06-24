@@ -1,0 +1,23 @@
+.usecase_forecast:
+  variables:
+    PROJECT_NAME: usecase_forecast
+    PROJECT_ID: your-project-id
+    REGION: us-central1
+    SERVICE_ACCOUNT: your-service-account@developer.gserviceaccount.com
+  before_script:
+    - echo ${PROJECT_NAME}
+  only:
+    changes:
+      - usecase_forecast/**/*
+
+usecase-forecast-test:
+  stage: test
+  extends:
+    - .usecase_forecast
+    - .unit_test_config
+
+usecase-forecast-deploy:
+  stage: deploy
+  extends:
+    - .usecase_forecast
+    - .deploy_cf_forecast

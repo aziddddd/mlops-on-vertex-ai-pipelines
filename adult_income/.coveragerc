@@ -1,0 +1,23 @@
+[run]
+source = ml_components
+omit =
+    tests/*
+    */__init__.py
+    */*/__init__.py
+    */*/USAGE*.ipynb
+    USAGE*.ipynb
+    alert.py
+    datacheck.py
+    dataimport.py
+    datapreproc.py
+    modelling.py
+    outbound.py
+    pipelinehelper.py
+    prediction.py
+
+[report]
+# Regexes for lines to exclude from consideration
+exclude_lines =
+    # Have to re-enable the standard pragma
+    pragma: no cover
+
