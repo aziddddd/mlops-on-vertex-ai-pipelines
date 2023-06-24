@@ -8,13 +8,13 @@ You managed to build a good demand forecasting model. or GPT-10. So, what's next
 
 People tend to think that a Machine Learning project is all just about building models that can do cool things.
 
-![alt text](https://github.com/aziddddd/mlops-on-vertex-ai-pipelines/blob/docs/resources/images/intro_1.png)
+![alt text](https://github.com/aziddddd/mlops-on-vertex-ai-pipelines/blob/main/docs/resources/images/intro_1.png)
 
 However, it's more that just that. A Machine Learning project is a lifecycle where we
 1. Continuously monitor and analyse the project performance from the perspective of business, data quality and pipeline health.
 2. Debug or enhance the component of the pipelines.
 
-![alt text](https://github.com/aziddddd/mlops-on-vertex-ai-pipelines/blob/docs/resources/images/intro_2.png)
+![alt text](https://github.com/aziddddd/mlops-on-vertex-ai-pipelines/blob/main/docs/resources/images/intro_2.png)
 
 This repository provides an end-to-end Machine Learning pipeline that allow us to iteratively develop and monitor the pipeline efficiently.
 
@@ -22,7 +22,7 @@ This repository provides an end-to-end Machine Learning pipeline that allow us t
 
 Below is the overall achitecture diagram of this MLOps framework, powered by Github, Kubeflow Pipeline and Google Cloud Platform.
 
-![alt text](https://github.com/aziddddd/mlops-on-vertex-ai-pipelines/blob/docs/resources/images/pipeline_deployment_forecast.png)
+![alt text](https://github.com/aziddddd/mlops-on-vertex-ai-pipelines/blob/main/docs/resources/images/pipeline_deployment_forecast.png)
 
 # Current Features
 
