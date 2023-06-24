@@ -22,7 +22,7 @@ This repository provides an end-to-end Machine Learning pipeline that allow us t
 
 Below is the overall achitecture diagram of this MLOps framework, powered by Github, Kubeflow Pipeline and Google Cloud Platform.
 
-![alt text](https://github.com/aziddddd/mlops-on-vertex-ai-pipelines/blob/main/docs/resources/images/pipeline_deployment_recsys.png)
+![alt text](https://github.com/aziddddd/mlops-on-vertex-ai-pipelines/blob/main/docs/resources/images/pipeline_deployment_recsys.png)c
 
 # Current Features
 
@@ -47,7 +47,7 @@ This MLOps framework is currently
 
 # Getting Started
 
-1. ```git clone https://gitlab.airasiatech.com/data/dot_com/dataengineering/vaip```
+1. ```git clone git@github.com:aziddddd/mlops-on-vertex-ai-pipelines.git```
 2. ```git checkout -b <your_working_branch_id>```
 3. ```cp -r usecase_recsys/ <your_project_name>/```
 4. ```cd <your_project_name>/```

@@ -47,7 +47,7 @@ This MLOps framework is currently
 
 # Getting Started
 
-1. ```git clone https://gitlab.airasiatech.com/data/dot_com/dataengineering/vaip```
+1. ```git clone git@github.com:aziddddd/mlops-on-vertex-ai-pipelines.git```
 2. ```git checkout -b <your_working_branch_id>```
 3. ```cp -r usecase_classification/ <your_project_name>/```
 4. ```cd <your_project_name>/```
